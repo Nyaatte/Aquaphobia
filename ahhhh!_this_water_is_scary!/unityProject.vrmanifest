@@ -1,0 +1,16 @@
+{
+  "source": "Unity",
+  "applications": [
+    {
+      "app_key": "application.generated.unity.ahhhh_this_water_is_scary.exe",
+      "launch_type": "url",
+      "url": "steam://launch/",
+      "action_manifest_path": "E:\\StudioIVProjectFolder\\ahhhh!_this_water_is_scary!\\Assets\\StreamingAssets\\SteamVR\\actions.json",
+      "strings": {
+        "en_us": {
+          "name": "ahhhh!_this_water_is_scary! [Testing]"
+        }
+      }
+    }
+  ]
+}
