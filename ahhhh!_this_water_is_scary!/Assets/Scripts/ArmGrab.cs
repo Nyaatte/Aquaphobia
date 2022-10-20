@@ -60,7 +60,7 @@ public class ArmGrab : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(rayshooter.position, rayshooter.TransformDirection(Vector3.forward), out hit, grabRange, layer))
             {
-                if (hit.transform.gameObject.CompareTag("putsomethingheredickhead"))
+                if (hit.transform.gameObject.CompareTag("Object"))
                 {
                     objectGrabbed = true;
                     grabbedObject = hit.transform.gameObject;
