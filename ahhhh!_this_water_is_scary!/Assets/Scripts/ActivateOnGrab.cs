@@ -23,7 +23,7 @@ public class ActivateOnGrab : MonoBehaviour
 
     public bool grabbed;
     public bool handSet;
-    [SerializeField] private bool reset;
+    private bool reset;
     
     void Start()
     {
