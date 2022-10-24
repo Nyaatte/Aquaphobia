@@ -15,8 +15,9 @@ public class ArmGrab : MonoBehaviour
     [SerializeField] private Transform rayshooter;
     [SerializeField] private float grabThreshold = 0.9f;
     [SerializeField] private float grabRange;
-    [SerializeField] private float minDist;
     [SerializeField] private float moveSpeed;
+    [SerializeField] private float torque;
+    [SerializeField] private float angularDampen = 0.8f;
     [SerializeField] private LayerMask layer;
     private bool objectGrabbed;
     private Rigidbody objectRb;
@@ -100,23 +101,25 @@ public class ArmGrab : MonoBehaviour
         Vector3 dir =  (grabPosition.position - grabbedObject.transform.position).normalized;
 
 
-        dir /= Time.fixedDeltaTime; //it will reach the position immediately with this calculation
+        dir /= Time.fixedDeltaTime; //caculate distance to travel to reach position in the next frame
         dir = Vector3.ClampMagnitude(dir, Vector3.Distance(grabbedObject.transform.position, grabPosition.position)); //clamp it down
 
         objectRb.velocity = (dir * moveSpeed);
 
-        //if ((Vector3.Distance(grabbedObject.transform.position, grabPosition.position)) < ) //i was going to make it so when its at the position the velocity is 0 but then you wouldn't be able to throw it auuughhhhhhh
-        
-        /*
-        float hookshotSpeed = Mathf.Clamp(Vector3.Distance(player.transform.position, hookshotPosition), hookshotSpeedMin, hookshotSpeedMax); //Limit the speed between two variables        
-        rb.MovePosition(player.transform.position + hookshotDir * hookshotSpeed * hookshotSpeedMultiplier * Time.deltaTime); //Move towards the hookshot target position
-        FUCK OFF DONT USE THIS
-        */ 
+        //roate object by applying torque
+        Quaternion rot = Quaternion.FromToRotation(grabbedObject.transform.up, grabPosition.transform.up);
 
-        //grabbedObject.transform.position = Vector3.MoveTowards(grabbedObject.transform.position, grabPosition.position, frameStep); // no it stays on the ground
-        //objectRb.MovePosition(grabbedObject.transform.position + dir * moveSpeed); //i didn't know you could have negative infinity
-        //objectRb.AddForce(dir * moveSpeed, ForceMode.Impulse); //goodbye
+        
+
+        // Quaternion delta = Quaternion.Euler(new Vector3(rot.x, rot.y, rot.z) * torque * Time.fixedDeltaTime);
+        
+
+        objectRb.MoveRotation(objectRb.rotation * rot);
+
+        //objectRb.AddTorque(-objectRb.angularVelocity * torque, ForceMode.Acceleration);
+        //objectRb.AddTorque(axis.normalized * angle * torque, ForceMode.Acceleration);
     }
+        
 
     
 
