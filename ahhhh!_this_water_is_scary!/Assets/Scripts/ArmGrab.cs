@@ -97,7 +97,7 @@ public class ArmGrab : MonoBehaviour
             return;
         }
         
-        float frameStep = (moveSpeed*Time.deltaTime);
+        
         Vector3 dir =  (grabPosition.position - grabbedObject.transform.position).normalized;
 
 
