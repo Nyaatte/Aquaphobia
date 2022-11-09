@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.InteractionSystem;
 
-public class SubmarineMovementController : MonoBehaviour
+public class HSubmarineMovement : MonoBehaviour
 {
     private Interactable interactable;
 
@@ -11,7 +11,9 @@ public class SubmarineMovementController : MonoBehaviour
     private Rigidbody rb;
     [SerializeField]
     private Hologram hologram;
-
+    [SerializeField]
+    private float curSpeed;
+    
     [SerializeField]
     private GameObject hologramInteractable;
 
@@ -75,13 +77,13 @@ public class SubmarineMovementController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        
-        
-            positionDifference = hologram.positionDifference;
-            calculateLerpScale();
-            MovementDirection();
-        
-        
+
+
+        positionDifference = hologram.positionDifference;
+        calculateLerpScale();
+        MovementDirection();
+
+
     }
 
     private void MovementDirection()
@@ -89,41 +91,52 @@ public class SubmarineMovementController : MonoBehaviour
         if (hologram.positionDifference.y < -yMinThreshold)
         {  //down
             currentFloatSpeed = Mathf.Lerp(minFloatSpeed, maxFloatSpeed, floatPercentageChange);
-            rb.AddForce(transform.up * currentFloatSpeed);
+            rb.AddForce(-transform.up * currentFloatSpeed);
+            Debug.Log("Going Down");
         }
 
         if (hologram.positionDifference.y > yMinThreshold)
         {  //up
             currentFloatSpeed = Mathf.Lerp(minFloatSpeed, maxFloatSpeed, floatPercentageChange);
-            rb.AddForce(-transform.up * currentFloatSpeed);
+            rb.AddForce(transform.up * currentFloatSpeed);
+            Debug.Log("Going Up");
         }
 
         if (hologram.positionDifference.z < -zMinThreshold)
         {  //backward
             currentThrustSpeed = Mathf.Lerp(minThrustSpeed, maxFloatSpeed, thrustPercentageChange);
             rb.AddForce(-transform.forward * maxThrustSpeed);
+            Debug.Log("Going Backwards");
         }
 
         if (hologram.positionDifference.z > zMinThreshold)
         {  //forward
             currentThrustSpeed = Mathf.Lerp(minThrustSpeed, maxThrustSpeed, thrustPercentageChange);
             rb.AddForce(transform.forward * currentThrustSpeed);
+            Debug.Log("Going Forwards");
         }
 
         if (hologram.positionDifference.x < -xMinThreshold)
         {  //left
             currentRotateSpeed = Mathf.Lerp(minRotateSpeed, maxRotateSpeed, rotatePercentageChange);
             EulerAngleLeftVelocity = new Vector3(0, currentRotateSpeed, 0);
-            Quaternion deltaLeftRotation = Quaternion.Euler(EulerAngleLeftVelocity * Time.fixedDeltaTime);
+            Quaternion deltaLeftRotation = Quaternion.Euler(
+                    EulerAngleLeftVelocity * Time.fixedDeltaTime
+                );
             rb.MoveRotation(rb.rotation * deltaLeftRotation);
+            Debug.Log("Turning Left");
         }
 
         if (hologram.positionDifference.x > xMinThreshold)
         {  //right
             currentRotateSpeed = Mathf.Lerp(minRotateSpeed, maxRotateSpeed, rotatePercentageChange);
             EulerAngleRightVelocity = new Vector3(0, -currentRotateSpeed, 0);
-            Quaternion deltaRightRotation = Quaternion.Euler(EulerAngleRightVelocity * Time.fixedDeltaTime);
+            Quaternion deltaRightRotation = Quaternion.Euler(
+                    EulerAngleRightVelocity * Time.fixedDeltaTime
+                );
+
             rb.MoveRotation(rb.rotation * deltaRightRotation);
+            Debug.Log("Turning Right");
         }
     }
 
